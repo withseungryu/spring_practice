@@ -1,6 +1,6 @@
-## 스프링 공부 with 토비의 스프링
+# 스프링 공부 with 토비의 스프링
 
-1장 1. 초난감 DAO 코드
+## 1장 1. 초난감 DAO 코드
 
 https://withseungryu.tistory.com/66
 
