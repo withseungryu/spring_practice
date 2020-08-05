@@ -4,8 +4,7 @@ public class Main {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
-		System.out.println("gd");
-        UserDao dao = new UserDao();
+		UserDao dao = new DaoFactory().userDao();
 
         User user = new User();
         user.setId("whiteship");
