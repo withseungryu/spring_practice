@@ -1,10 +1,15 @@
 import java.sql.SQLException;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.*;
+
 public class Main {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
-		UserDao dao = new DaoFactory().userDao();
+		 ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+		UserDao dao =  context.getBean("userDao", UserDao.class);
+
 
         User user = new User();
         user.setId("whiteship");

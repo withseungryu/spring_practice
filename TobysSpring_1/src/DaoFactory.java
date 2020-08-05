@@ -1,8 +1,18 @@
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Bean;
 
-public class DaoFactory {
+
+
+@Configuration
+public class DaoFactory{
+	@Bean
 	public UserDao userDao() {
-		ConnectionMaker connectionMaker = new NConnectionMaker();
-		UserDao userDao = new UserDao(connectionMaker);
-		return userDao;
+		return new UserDao(connectionMaker());
+	}
+	
+	
+	@Bean
+	public ConnectionMaker connectionMaker() {
+		return new NConnectionMaker();
 	}
 }
