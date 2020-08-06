@@ -16,6 +16,9 @@ public class UserDaoTest {
 		
 		UserDao dao = context.getBean("userDao", UserDao.class);
 		
+		dao.deleteAll();
+        assertThat(dao.getCount(), is(0)); //삭제 한 후 테이블 갯수 count 검증 코드
+		
 		User user = new User();
 		
         user.setId("gyumee");
@@ -23,8 +26,10 @@ public class UserDaoTest {
         user.setPassword("springno1");
 
         dao.add(user);
-          
+        assertThat(dao.getCount(), is(1)); //추가 후 테이블 갯수 count 검증 코드 
+        
         User user2 = dao.get(user.getId());
+        
         
         assertThat(user2.getName(), is(user.getName()));
         assertThat(user2.getPassword(), is(user.getPassword()));
