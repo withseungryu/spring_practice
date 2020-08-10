@@ -22,8 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;;
 
 //테스트를 위한 애플리케이션 컨텍스트 관리
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath:applicationContext.xml")
-@DirtiesContext
+@ContextConfiguration(locations="classpath:test-applicationContext.xml")
 public class UserDaoTest {
 	
 	@Autowired
@@ -50,8 +49,8 @@ public class UserDaoTest {
 		System.out.println();
 		System.out.println(this);
 		
-		SingleConnectionDataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost:3306/testdb", "root", "@min753951", true);
-		dao.setDataSource(dataSource);
+//		SingleConnectionDataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost:3306/testdb", "root", "@min753951", true);
+//		dao.setDataSource(dataSource);
 	}
 	
 	@Test
