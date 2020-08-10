@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;;
 
 
 
-
+//테스트를 위한 애플리케이션 컨텍스트 관리
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:applicationContext.xml")
 public class UserDaoTest {
