@@ -13,6 +13,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;;
 
@@ -21,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;;
 //테스트를 위한 애플리케이션 컨텍스트 관리
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:applicationContext.xml")
+@DirtiesContext
 public class UserDaoTest {
 	
 	@Autowired
@@ -35,12 +38,20 @@ public class UserDaoTest {
 	@Before
 	public void setUp() {
 	
+		
 //		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
 		this.dao = context.getBean("userDao", UserDao.class);
 		
 		this.user1 = new User("gyumee", "sungcheol Park", "springno1");
 		this.user2 = new User("leegw700", "gilwon Lee", "springno2");
 		this.user3 = new User("bumjin", "bumjin Park", "springno3");
+		
+		System.out.println(this.context);
+		System.out.println();
+		System.out.println(this);
+		
+		SingleConnectionDataSource dataSource = new SingleConnectionDataSource("jdbc:mysql://localhost:3306/testdb", "root", "@min753951", true);
+		dao.setDataSource(dataSource);
 	}
 	
 	@Test
