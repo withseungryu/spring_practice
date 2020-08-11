@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.either;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class JUnitTest {
 		assertThat(testObjects, not(hasItem(this)));
 		testObjects.add(this);
 		
-		assertThat(contextObject == null || contextObject == this.context, is(true));
+		assertTrue(contextObject == null || contextObject == this.context);
 		contextObject = this.context;
 	}
 	
