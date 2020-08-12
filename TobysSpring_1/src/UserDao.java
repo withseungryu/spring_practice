@@ -16,18 +16,40 @@ public class UserDao {
 	}
 	
 	public void add(final User user) throws ClassNotFoundException, SQLException {
-        class AddStatement implements StatementStrategy{
-        	public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-        		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?,?,?)");
-        		 ps.setString(1, user.getId());
-        	     ps.setString(2, user.getName());
-        	     ps.setString(3, user.getPassword());
-        	     return ps;
-        	}
-        }
+        
+//		class AddStatement implements StatementStrategy{
+//        	public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+//        		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?,?,?)");
+//        		 ps.setString(1, user.getId());
+//        	     ps.setString(2, user.getName());
+//        	     ps.setString(3, user.getPassword());
+//        	     return ps;
+//        	}
+//        }
 		
-		StatementStrategy st = new AddStatement();//따로 생성자를 만들어줄 필요가 없다 로컬클래스이므로
-		jdbcContextWithStatementStrategy(st);
+		//익명 클래스
+//		StatementStrategy st = new StatementStrategy() {
+//			public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+//        		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?,?,?)");
+//        		 ps.setString(1, user.getId());
+//        	     ps.setString(2, user.getName());
+//        	     ps.setString(3, user.getPassword());
+//        	     return ps;
+//        	}
+//		};//따로 생성자를 만들어줄 필요가 없다 로컬클래스이므로
+		
+		//메소드 파라미터로 이전한 익명 내부 클래스
+		jdbcContextWithStatementStrategy(
+				new StatementStrategy() {
+					public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+		        		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?,?,?)");
+		        		 ps.setString(1, user.getId());
+		        	     ps.setString(2, user.getName());
+		        	     ps.setString(3, user.getPassword());
+		        	     return ps;
+		        	}
+				}
+			);
 
     }
 	
@@ -60,8 +82,16 @@ public class UserDao {
 	}
 	
 	public void deleteAll() throws SQLException {
-		StatementStrategy st = new DeleteAllStatement();
-		jdbcContextWithStatementStrategy(st);
+//		StatementStrategy st = new DeleteAllStatement();
+		jdbcContextWithStatementStrategy(
+				new StatementStrategy() {
+					public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+						
+						PreparedStatement ps = c.prepareStatement("delete from users");
+						return ps;
+					}
+				}
+			);
 		
 	}
 	
