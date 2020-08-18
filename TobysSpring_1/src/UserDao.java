@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+
 
 public class UserDao {
 
@@ -13,10 +16,12 @@ public class UserDao {
 	
 	private JdbcContext jdbcContext;
 	
+	private JdbcTemplate jdbcTemplate;
+	
 	public void setDataSource(DataSource dataSource) {
-		this.jdbcContext = new JdbcContext();
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 		
-		this.jdbcContext.setDataSource(dataSource);
+		
 		
 		this.dataSource = dataSource;
 	}
@@ -53,17 +58,19 @@ public class UserDao {
 //		};//따로 생성자를 만들어줄 필요가 없다 로컬클래스이므로
 		
 		//메소드 파라미터로 이전한 익명 내부 클래스
-		this.jdbcContext.workWithStatementStrategy(
-				new StatementStrategy() {
-					public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-		        		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?,?,?)");
-		        		 ps.setString(1, user.getId());
-		        	     ps.setString(2, user.getName());
-		        	     ps.setString(3, user.getPassword());
-		        	     return ps;
-		        	}
-				}
-			);
+//		this.jdbcContext.workWithStatementStrategy(
+//				new StatementStrategy() {
+//					public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+//		        		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values (?,?,?)");
+//		        		 ps.setString(1, user.getId());
+//		        	     ps.setString(2, user.getName());
+//		        	     ps.setString(3, user.getPassword());
+//		        	     return ps;
+//		        	}
+//				}
+//			);
+		
+		this.jdbcTemplate.update("insert into users(id,name,password) values(?,?,?)", user.getId(), user.getName(), user.getPassword());
 
     }
 	
@@ -97,7 +104,15 @@ public class UserDao {
 	
 	public void deleteAll() throws SQLException {
 //		StatementStrategy st = new DeleteAllStatement();
-		this.jdbcContext.executeSql("delete from users");
+		this.jdbcTemplate.update(
+//				new PreparedStatementCreator() {
+//					public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+//						return con.prepareStatement("delete from users");
+//					}
+//				}
+//				
+				"delete from users"
+				);
 		
 	}
 	
