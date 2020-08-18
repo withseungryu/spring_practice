@@ -163,16 +163,20 @@ public class UserDao {
 //			}
 //		}
 		
-		return this.jdbcTemplate.query(new PreparedStatementCreator() {
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				return con.prepareStatement("select count(*) from users");
-			}
-		}, new ResultSetExtractor<Integer>() {
-			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-				rs.next();
-				return rs.getInt(1);
-			}
-		});
+//		return this.jdbcTemplate.query(new PreparedStatementCreator() {
+//			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+//				return con.prepareStatement("select count(*) from users");
+//			}
+//		}, new ResultSetExtractor<Integer>() {
+//			public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
+//				rs.next();
+//				return rs.getInt(1);
+//			}
+//		});
+		
+	
+		return this.jdbcTemplate.queryForInt("select (*) from users");
+		
 
 	}
 	
