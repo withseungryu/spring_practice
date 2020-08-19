@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
@@ -17,15 +19,12 @@ public class UserDao {
 
 	private DataSource dataSource;
 	
-	private JdbcContext jdbcContext;
+//	private JdbcContext jdbcContext;
 	
 	private JdbcTemplate jdbcTemplate;
 	
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
-		
-		
-		
 		this.dataSource = dataSource;
 	}
 	
@@ -72,8 +71,7 @@ public class UserDao {
 //		        	}
 //				}
 //			);
-		
-		this.jdbcTemplate.update("insert into users(id,name,password) values(?,?,?)", user.getId(), user.getName(), user.getPassword());
+		this.jdbcTemplate.update("insert into users(id, name, password) values(?,?,?)", user.getId(), user.getName(), user.getPassword());
 
     }
 	
@@ -191,11 +189,10 @@ public class UserDao {
 //		});
 		
 	
-			return this.jdbcTemplate.queryForInt("select (*) from users");
+			return this.jdbcTemplate.queryForInt("select count(*) from users");
 		}
 
-	
-	
+
 	//컨텍스트 부분을 분리하기 위한 메소드
 //	public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException {
 //		Connection c = null;
@@ -224,6 +221,19 @@ public class UserDao {
 //			}
 //		}
 //	}
-		
+	public List<User> getAll(){
+		return this.jdbcTemplate.query("select * from users order by id" ,
+				new RowMapper<User>() {
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+				User user = new User();
+				user.setId(rs.getString("id"));
+				user.setName(rs.getString("name"));
+				user.setPassword(rs.getString("password"));
+				return user;
+				
+			}
+		}
+				);
+	}
 
 }
