@@ -22,7 +22,7 @@ public class UserDaoTest {
 	@Autowired
 	private ApplicationContext context;
 	
-	private UserDao dao;
+	private UserDaoJdbc dao;
 	private User user1;
 	private User user2;
 	private User user3;
@@ -33,7 +33,7 @@ public class UserDaoTest {
 	
 		
 //		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
-		this.dao = context.getBean("userDao", UserDao.class);
+		this.dao = context.getBean("userDao", UserDaoJdbc.class);
 		
 		this.user1 = new User("gyumee", "sungcheol Park", "springno1");
 		this.user2 = new User("leegw700", "gilwon Lee", "springno2");
@@ -132,7 +132,7 @@ public class UserDaoTest {
 		assertThat(users3.size(), is(3));
 		checkSameUser(user3, users2.get(0));
 		checkSameUser(user1, users2.get(1));
-		checkSameUser(user2, users2.get(2));
+		checkSameUser(user2, users2.get(2));  
 
 	}
 	

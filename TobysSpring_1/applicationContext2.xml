@@ -10,7 +10,7 @@
 		<property name="password" value="@min753951" />
 	</bean>
 	
-	<bean id="userDao" class="UserDao">
+	<bean id="userDao" class="UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
