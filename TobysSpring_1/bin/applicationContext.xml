@@ -18,4 +18,7 @@
 		<property name="userDao" ref="userDao" />
 	</bean>
 
+
+	<bean id="userLevel" class="UserLevelUpNewYear">
+	</bean>
 </beans>

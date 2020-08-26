@@ -23,6 +23,7 @@ public class UserServiceTest {
 	@Autowired
 	UserService userService;
 	
+	
 	UserDaoJdbc userDao;
 	List<User> users;
 	
@@ -47,13 +48,15 @@ public class UserServiceTest {
 	
 	@Test
 	public void upgradeLevels() {
+		int event = 0;
+		
 		userDao.deleteAll();
 		
 		for(User user : users) {userDao.add(user);
 		
 		}
 		
-		userService.upgradeLevels();
+		userService.upgradeLevels(1);
 		
 		checkLevel(users.get(0), false);
 		checkLevel(users.get(1), true);

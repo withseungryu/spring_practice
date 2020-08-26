@@ -4,16 +4,36 @@ import java.util.List;
 public class UserService {
 	UserDao userDao;
 	
+	UserLevelUpgradePolicy userLevelUpgradePolicy;
+	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 	
-	public void upgradeLevels() {
+	public void setUserLevelUpgradePolicy(UserLevelUpgradePolicy userLevelUpgradePolicy) {
+		this.userLevelUpgradePolicy = userLevelUpgradePolicy;
+	}
+	
+	public void upgradeLevels(int event) {
 		List<User> users = userDao.getAll();
 		for(User user : users) {
-			if(canUpgradeLevel(user)) {
-				upgradeLevel(user);
+			
+			if(event == 0) {
+				if(canUpgradeLevel(user)) {
+					upgradeLevel(user);
+		
+				}
+			}else {
+				if(userLevelUpgradePolicy.canUpgradeLevel(user)) {
+					userLevelUpgradePolicy.upgradeLevel(user);
+				}
 			}
+			
+//			else {
+//				if(this.userLevelUpgradePolicy.canUpgradeLevel(user)) {
+//					this.userLevelUpgradePolicy.upgradeLevel(user);
+//				}
+//			}
 		}
 		
 //		for(User user : users) {
@@ -40,6 +60,7 @@ public class UserService {
 	
 	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
 	public static final int MIN_RECCOMEND_FOR_GOLD = 30;
+	
 	private boolean canUpgradeLevel(User user) {
 		Level currentLevel = user.getLevel();
 		switch(currentLevel) {
