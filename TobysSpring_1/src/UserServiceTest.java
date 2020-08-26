@@ -22,6 +22,7 @@ public class UserServiceTest {
 	
 	@Autowired
 	UserService userService;
+	
 	UserDaoJdbc userDao;
 	List<User> users;
 	
