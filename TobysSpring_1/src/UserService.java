@@ -53,9 +53,11 @@ public class UserService {
 //		}
 	}
 	
-	private void upgradeLevel(User user) {
+	protected void upgradeLevel(User user) {
 		user.upgradeLevel();
 		userDao.update(user);
+		
+
 	}
 	
 	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;

@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,6 +66,25 @@ public class UserServiceTest {
 		checkLevel(users.get(4), false);
 	}
 	
+	@Test
+	public void upgradeAllOrNothing() {
+		UserService testUserService = new TestUserService(users.get(3).getId());
+		testUserService.setUserDao(this.userDao);
+		
+		userDao.deleteAll();
+		for(User user : users) userDao.add(user);
+		
+		try {
+			testUserService.upgradeLevels(0);
+			fail("TestUserServiceException expected");
+		}
+		catch(TestUserServiceException e) {
+			
+		}
+		
+		checkLevel(users.get(1), false);
+	}
+	
 	private void checkLevel(User user,boolean upgraded) {
 		User userUpdate = userDao.get(user.getId());
 		if(upgraded) {
@@ -92,4 +112,6 @@ public class UserServiceTest {
 		assertThat(userWithoutLevelRead.getLevel(), is(Level.BASIC));
 		
 	}
+	
+
 }
