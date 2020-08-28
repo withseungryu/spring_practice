@@ -1,8 +1,20 @@
+
+import java.sql.Connection;
 import java.util.List;
 
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+
+import javax.sql.DataSource;
 public class UserService {
 	UserDao userDao;
+	
+	private DataSource dataSource;
+	
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 	
 	UserLevelUpgradePolicy userLevelUpgradePolicy;
 	
@@ -10,30 +22,46 @@ public class UserService {
 		this.userDao = userDao;
 	}
 	
+	
 	public void setUserLevelUpgradePolicy(UserLevelUpgradePolicy userLevelUpgradePolicy) {
 		this.userLevelUpgradePolicy = userLevelUpgradePolicy;
 	}
 	
-	public void upgradeLevels(int event) {
-		List<User> users = userDao.getAll();
-		for(User user : users) {
-			
-			if(event == 0) {
-				if(canUpgradeLevel(user)) {
-					upgradeLevel(user);
+	public void upgradeLevels(int event) throws Exception {
+		TransactionSynchronizationManager.initSynchronization();
+		Connection c = DataSourceUtils.getConnection(dataSource);
 		
-				}
-			}else {
-				if(userLevelUpgradePolicy.canUpgradeLevel(user)) {
-					userLevelUpgradePolicy.upgradeLevel(user);
-				}
-			}
+		c.setAutoCommit(false);
+		
+		try{
+			List<User> users = userDao.getAll();
+			for(User user : users) {
+				
+				if(event == 0) {
+					if(canUpgradeLevel(user)) {
+						upgradeLevel(user);
 			
-//			else {
-//				if(this.userLevelUpgradePolicy.canUpgradeLevel(user)) {
-//					this.userLevelUpgradePolicy.upgradeLevel(user);
-//				}
-//			}
+					}
+				}else {
+					if(userLevelUpgradePolicy.canUpgradeLevel(user)) {
+						userLevelUpgradePolicy.upgradeLevel(user);
+					}
+				}
+				
+	//			else {
+	//				if(this.userLevelUpgradePolicy.canUpgradeLevel(user)) {
+	//					this.userLevelUpgradePolicy.upgradeLevel(user);
+	//				}
+	//			}
+			}
+			c.commit();
+		}catch(Exception e) {
+			c.rollback();
+			throw e;
+		}finally {
+			DataSourceUtils.releaseConnection(c, dataSource);
+			TransactionSynchronizationManager.unbindResource(this.dataSource);
+			TransactionSynchronizationManager.clearSynchronization();
 		}
 		
 //		for(User user : users) {

@@ -48,7 +48,7 @@ public class UserServiceTest {
 	
 	
 	@Test
-	public void upgradeLevels() {
+	public void upgradeLevels() throws Exception {
 		int event = 0;
 		
 		userDao.deleteAll();
@@ -67,7 +67,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void upgradeAllOrNothing() {
+	public void upgradeAllOrNothing() throws Exception {
 		UserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(this.userDao);
 		
@@ -90,7 +90,7 @@ public class UserServiceTest {
 		if(upgraded) {
 			assertThat(userUpdate.getLevel(), is(user.getLevel().nextLevel()));
 		}else{
-			assertThat(userUpdate.getLevel(), is(user.getLevel()));
+			assertThat(userUpdate.	getLevel(), is(user.getLevel()));
 		}
 	}
 	
